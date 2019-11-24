@@ -1,0 +1,248 @@
+# Definir GUI del formulario
+[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
+[void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
+$objForm = New-Object System.Windows.Forms.Form
+$objForm.Text = "TEST POLITICO"
+$objForm.Size = New-Object System.Drawing.Size(450,700)
+$objForm.StartPosition = "CenterScreen"
+$objForm.KeyPreview = $True
+
+# Añadiremos un título al formulario
+$title = New-Object System.Windows.Forms.Label
+$title.Location = New-Object System.Drawing.Size(50,10)
+$title.Text = "¿ A que partido político perteneces?"
+$title.AutoSize = $True
+$objForm.Controls.Add($title)
+
+# Nombre
+$objLabelName = New-Object System.Windows.Forms.Label
+$objLabelName.Location = New-Object System.Drawing.Size(50,40)
+$objLabelName.Size = New-Object System.Drawing.Size(280,20)
+$objLabelName.Text = "Nombre:"
+$objForm.Controls.Add($objLabelName)
+$objTextBoxName = New-Object System.Windows.Forms.TextBox
+$objTextBoxName.Location = New-Object System.Drawing.Size(50,60)
+$objTextBoxName.Size = New-Object System.Drawing.Size(260,20)
+$objForm.Controls.Add($objTextBoxName)
+
+# Apellido
+$objLabelSurname = New-Object System.Windows.Forms.Label
+$objLabelSurname.Location = New-Object System.Drawing.Size(50,90)
+$objLabelSurname.Size = New-Object System.Drawing.Size(280,20)
+$objLabelSurname.Text = "Apellido :"
+$objForm.Controls.Add($objLabelSurname)
+$objTextBoxSurname = New-Object System.Windows.Forms.TextBox
+$objTextBoxSurname.Location = New-Object System.Drawing.Size(50,110)
+$objTextBoxSurname.Size = New-Object System.Drawing.Size(260,20)
+$objForm.Controls.Add($objTextBoxSurname)
+
+# Email
+$objLabelAlias = New-Object System.Windows.Forms.Label
+$objLabelAlias.Location = New-Object System.Drawing.Size(50,140)
+$objLabelAlias.Size = New-Object System.Drawing.Size(280,20)
+$objLabelAlias.Text = "Email:"
+$objForm.Controls.Add($objLabelAlias)
+$objTextBoxAlias = New-Object System.Windows.Forms.TextBox
+$objTextBoxAlias.Location = New-Object System.Drawing.Size(50,160)
+$objTextBoxAlias.Size = New-Object System.Drawing.Size(260,20)
+$objForm.Controls.Add($objTextBoxAlias)
+
+
+#Declaramos la variable general que servira de contador
+$varcontargeneral=0
+
+# Pregunta1
+$objLabelPregunta1 = New-Object System.Windows.Forms.Label
+$objLabelPregunta1.Location = New-Object System.Drawing.Size(50,190)
+$objLabelPregunta1.Size = New-Object System.Drawing.Size(280,20)
+$objLabelPregunta1.Text = "¿Cuál es tu postura sobre el aborto?"
+$objForm.Controls.Add($objLabelPregunta1)
+#Checkbox Si
+$objSiCheckbox1 = new-object System.Windows.Forms.checkbox
+$objSiCheckbox1.Location = new-object System.Drawing.Size(50,210)
+$objSiCheckbox1.Size = new-object System.Drawing.Size(200,20)
+$objSiCheckbox1.Text = "Si"
+$objForm.Controls.Add($objSiCheckbox1)
+#Checkbox No
+$objNoCheckbox1 = new-object System.Windows.Forms.checkbox
+$objNoCheckbox1.Location = new-object System.Drawing.Size(50,230)
+$objNoCheckbox1.Size = new-object System.Drawing.Size(200,20)
+$objNoCheckbox1.Text = "No"
+$objForm.Controls.Add($objNoCheckbox1)
+
+# Pregunta2
+$objLabelPregunta2 = New-Object System.Windows.Forms.Label
+$objLabelPregunta2.Location = New-Object System.Drawing.Size(50,260)
+$objLabelPregunta2.Size = New-Object System.Drawing.Size(280,40)
+$objLabelPregunta2.Text = "¿Debería ser legal quemar la bandera española?"
+$objForm.Controls.Add($objLabelPregunta2)
+#Checkbox Si
+$objSiCheckbox2 = new-object System.Windows.Forms.checkbox
+$objSiCheckbox2.Location = new-object System.Drawing.Size(50,300)
+$objSiCheckbox2.Size = new-object System.Drawing.Size(200,20)
+$objSiCheckbox2.Text = "Si"
+$objForm.Controls.Add($objSiCheckbox2)
+#Checkbox No
+$objNoCheckbox2 = new-object System.Windows.Forms.checkbox
+$objNoCheckbox2.Location = new-object System.Drawing.Size(50,320)
+$objNoCheckbox2.Size = new-object System.Drawing.Size(200,20)
+$objNoCheckbox2.Text = "No"
+$objForm.Controls.Add($objNoCheckbox2)
+
+# Pregunta3
+$objLabelPregunta3 = New-Object System.Windows.Forms.Label
+$objLabelPregunta3.Location = New-Object System.Drawing.Size(50,350)
+$objLabelPregunta3.Size = New-Object System.Drawing.Size(280,40)
+$objLabelPregunta3.Text = "¿Debería Cataluña convertirse en un estado independiente?"
+$objForm.Controls.Add($objLabelPregunta3)
+#Checkbox Si
+$objSiCheckbox3 = new-object System.Windows.Forms.checkbox
+$objSiCheckbox3.Location = new-object System.Drawing.Size(50,390)
+$objSiCheckbox3.Size = new-object System.Drawing.Size(200,20)
+$objSiCheckbox3.Text = "Si"
+$objForm.Controls.Add($objSiCheckbox3)
+#Checkbox No
+$objNoCheckbox3 = new-object System.Windows.Forms.checkbox
+$objNoCheckbox3.Location = new-object System.Drawing.Size(50,410)
+$objNoCheckbox3.Size = new-object System.Drawing.Size(200,20)
+$objNoCheckbox3.Text = "No"
+$objForm.Controls.Add($objNoCheckbox3)
+
+# Pregunta4
+$objLabelPregunta4 = New-Object System.Windows.Forms.Label
+$objLabelPregunta4.Location = New-Object System.Drawing.Size(50,440)
+$objLabelPregunta4.Size = New-Object System.Drawing.Size(280,40)
+$objLabelPregunta4.Text = "¿Estás a favor del matrimonio homosexual?"
+$objForm.Controls.Add($objLabelPregunta4)
+#Checkbox Si
+$objSiCheckbox4 = new-object System.Windows.Forms.checkbox
+$objSiCheckbox4.Location = new-object System.Drawing.Size(50,480)
+$objSiCheckbox4.Size = new-object System.Drawing.Size(200,20)
+$objSiCheckbox4.Text = "Si"
+$objSiCheckbox4.Checked = $false
+$objForm.Controls.Add($objSiCheckbox4)
+#Checkbox No
+$objNoCheckbox4 = new-object System.Windows.Forms.checkbox
+$objNoCheckbox4.Location = new-object System.Drawing.Size(50,500)
+$objNoCheckbox4.Size = new-object System.Drawing.Size(200,20)
+$objNoCheckbox4.Text = "No"
+$objForm.Controls.Add($objNoCheckbox4)
+
+
+# Botón Cancel
+$CancelButton = New-Object System.Windows.Forms.Button
+$CancelButton.Location = New-Object System.Drawing.Size(50,600)
+$CancelButton.Size = New-Object System.Drawing.Size(75,23)
+$CancelButton.Text = "Cancelar"
+$CancelButton.Add_Click({$objForm.Close()})
+$objForm.Controls.Add($CancelButton)
+
+# Botón de OK
+$OKButton = New-Object System.Windows.Forms.Button
+$OKButton.Location = New-Object System.Drawing.Size(300,600)
+$OKButton.Size = New-Object System.Drawing.Size(75,23)
+$OKButton.Text = "OK"
+$OKButton.Add_Click(
+{
+    if ($objNoCheckbox1.Checked -eq $True){
+        $varcontargeneral++
+    }
+    if ($objNoCheckbox2.Checked -eq $True){
+        $varcontargeneral++
+    }
+    if ($objNoCheckbox3.Checked -eq $True){
+        $varcontargeneral++
+    }
+    if ($objNoCheckbox4.Checked -eq $True){
+        $varcontargeneral++
+    }
+
+     $varcontargeneral > C:\xampp\htdocs\wp\varcontargeneral.txt
+
+    $objForm.Close()
+})
+$objForm.Controls.Add($OKButton)
+
+# Activamos formulario
+$objForm.Add_Shown({$objForm.Activate()})
+[void] $objForm.ShowDialog()
+
+#################################################################################################################
+
+#Guardamos los datos del formulario en variables y comenzamos la instalación de wp
+$name = $objTextBoxName.Text
+$surname = $objTextBoxSurname.Text
+$alias = $objTextBoxAlias.Text
+$pagewp= Get-Content C:\xampp\htdocs\wp\varcontargeneral.txt 
+
+#Nos movemos a la carapeta donde vamos a instalar la estructura WP
+cd C:\xampp\htdocs\wp
+
+#Comenzamos con la instalación
+New-Item -ItemType Directory -Name $name -Force
+cd C:\xampp\htdocs\wp\$name
+php.exe C:\xampp\php\wp-cli.phar core download
+php.exe C:\xampp\php\wp-cli.phar config create --dbname=$name --dbuser=root
+
+# Crea la base de datos con la estructura de WordPress
+php.exe C:\xampp\php\wp-cli.phar db create
+php.exe C:\xampp\php\wp-cli.phar core install --url=localhost/wp/$name --title="Bienvenido" --admin_user=$name --admin_password=1234 --admin_email=$alias
+
+#Instalar un plugin diseño de la pagina
+php.exe C:\xampp\php\wp-cli.phar plugin install Elementor --activate 
+
+#Instalar un plugin traductor
+php.exe C:\xampp\php\wp-cli.phar plugin install Weglot Translate --activate
+
+#Instalar un plugin  poscionamiento SEO
+php.exe C:\xampp\php\wp-cli.phar plugin install WP Smush --activate 
+
+#Instalar un plugin copia de seguridad para trabajar en local y subirlo a un hosting
+php.exe C:\xampp\php\wp-cli.phar plugin install BackWPup --activate 
+
+cd ..
+
+
+
+if($pagewp -ge 2 ){
+
+#Cargamos el primer perfil de pagina de WP
+$Option1="https://www.votoenblanco.com/Razones-y-argumentos-para-votar-a-VOX_a7631.html"
+$resultado1= Invoke-WebRequest $Option1
+$titulo1 = $resultado1.AllElements | Where class -eq “titre” | %{$_."titre"}
+$contenido1 =$resultado1.AllElements | Where Class -eq “chapeau" | %{$_."chapeau"}
+$titulo1 > titulo.txt
+$contenido1 > contenido.txt
+$Vpart1= Get-Content titulo.txt 
+$Vpart2= Get-Content  contenido.txt
+
+for($i=0;$i -le $contenido1.Length;$i=$i+1)
+{
+   $contenido= $contenido1[$i]
+   $contenidos= $contenido2[$i]
+   $contenidox= $contenido3[$i]
+   #php.exe C:\xampp\php\wp-cli.phar post create --post_title="$contenido" --post_content="<div style="background-color:aqua"><li><strong>$contenido</strong></li><li><strong>$contenidos€</strong></li><li><a href="https://www.pccomponentes.com$contenidox"><strong>"Pagina_Web"</strong></a></li></div>" --post_type="post" --menu_order=7
+}
+
+
+}else{
+
+#Cargamos el segundo perfil de pagina de WP
+$Option2="https://www.cuartopoder.es/ideas/opinion/2016/06/24/votare-unidos-podemos/"
+$resultado2= Invoke-WebRequest $Option2
+$titulo2 = $resultado2.AllElements | Where id -eq “post-title” | %{$_."post-title"}
+$contenido2 =$resultado2.AllElements | Where Class -eq “entry-content clearfix single-post-content" | %{$_."entry-content clearfix single-post-content"}
+$titulo2> titulo.txt
+$Vpart3= Get-Content titulo.txt 
+$Vpart4= Get-Content  contenido.txt
+
+
+foreach($page2 in $Vpart3 + $Vpart4)
+{
+ 
+php.exe C:\xampp\php\wp-cli.phar post create --post_title="$page2" --post_content="<li>$page2</li> <li>$page2</li>" --post_type="post" --menu_order=7
+ 
+}
+
+
+}
