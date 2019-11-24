@@ -200,9 +200,6 @@ php.exe C:\xampp\php\wp-cli.phar plugin install WP Smush --activate
 #Instalar un plugin copia de seguridad para trabajar en local y subirlo a un hosting
 php.exe C:\xampp\php\wp-cli.phar plugin install BackWPup --activate 
 
-cd ..
-
-
 
 if($pagewp -ge 2 ){
 
