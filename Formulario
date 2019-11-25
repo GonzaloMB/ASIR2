@@ -213,13 +213,10 @@ $contenido1 > contenido.txt
 $Vpart1= Get-Content titulo.txt 
 $Vpart2= Get-Content  contenido.txt
 
-for($i=0;$i -le $contenido1.Length;$i=$i+1)
-{
-   $contenido= $contenido1[$i]
-   $contenidos= $contenido2[$i]
-   $contenidox= $contenido3[$i]
-   #php.exe C:\xampp\php\wp-cli.phar post create --post_title="$contenido" --post_content="<div style="background-color:aqua"><li><strong>$contenido</strong></li><li><strong>$contenidos€</strong></li><li><a href="https://www.pccomponentes.com$contenidox"><strong>"Pagina_Web"</strong></a></li></div>" --post_type="post" --menu_order=7
-}
+$contenido= $vpart1
+$contenidos= $vpart2
+php.exe C:\xampp\php\wp-cli.phar post create --post_title="$contenido" --post_content="<div style="background-color:aqua"><li><strong>$contenido</strong></li><li><strong>$contenidos€</strong></li></div>" --post_type="post" --menu_order=7
+
 
 
 }else{
@@ -233,13 +230,8 @@ $titulo2> titulo.txt
 $Vpart3= Get-Content titulo.txt 
 $Vpart4= Get-Content  contenido.txt
 
-
-foreach($page2 in $Vpart3 + $Vpart4)
-{
- 
-php.exe C:\xampp\php\wp-cli.phar post create --post_title="$page2" --post_content="<li>$page2</li> <li>$page2</li>" --post_type="post" --menu_order=7
- 
-}
-
+$contenido= $vpart3
+$contenidos= $vpart4
+php.exe C:\xampp\php\wp-cli.phar post create --post_title="$contenido" --post_content="<div style="background-color:aqua"><li><strong>$contenido</strong></li><li><strong>$contenidos€</strong></li></div>" --post_type="post" --menu_order=7 
 
 }
