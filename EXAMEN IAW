@@ -1,0 +1,85 @@
+cd C:\xampp\htdocs\wp
+#Sacar el nombre de cada banco
+$web=Invoke-WebRequest ‘http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?indice=ESI100000000’ 
+$var1=$web.AllElements | Where Class -eq “DifFlBj” | %{$_.innerText} 
+$var2=$web.AllElements | Where Class -eq “DifFlSb” | %{$_.innerText} 
+$var3=$web.AllElements | Where Class -eq “DifFlIg” | %{$_.innerText}
+$var1 > web.txt
+$var2 >> web.txt
+$var3 >>web.txt
+$contenido= Get-Content web.txt
+
+#Sacar %diferencia de cada banco
+
+$web=Invoke-WebRequest ‘http://www.bolsamadrid.es/esp/aspx/Mercados/Precios.aspx?indice=ESI100000000’ 
+$var4=$web.AllElements | Where Class -eq “DifClBj” | %{$_.innerText} 
+$var5=$web.AllElements | Where Class -eq “DifClSb” | %{$_.innerText} 
+$var6=$web.AllElements | Where Class -eq “DifClIg” | %{$_.innerText}
+$var4 > datos.txt
+$var5 >> datos.txt
+$var6 >>datos.txt
+$datos= Get-Content datos.txt
+
+#Crea un wp por cada banco
+
+foreach($contenido in $contenido){
+
+    $contenido=$contenido.replace(".","")
+    $contenido=$contenido.ToLower()
+    
+
+    #Crea estrucutra carpeta WP
+    cd C:\xampp\htdocs\wp
+    New-Item -ItemType Directory -Name $contenido -Force
+    cd C:\xampp\htdocs\wp\$contenido
+    php.exe C:\xampp\php\wp-cli.phar core download
+    php.exe C:\xampp\php\wp-cli.phar config create --dbname=$contenido --dbuser=root
+
+    # Crea la base de datos con la estructura de WordPress
+    php.exe C:\xampp\php\wp-cli.phar db create
+    php.exe C:\xampp\php\wp-cli.phar core install --url=www.$contenido.gon --title="$contenido" --admin_user=mi_usuario --admin_password=1234 --admin_email=miuser@email.com 
+
+    # Plugin wordpress responsive  
+    php.exe A:\Programas\Xampp\php\wp-cli.phar plugin install wptouch --activate
+
+    # Plugin botones redes sociales
+    php.exe A:\Programas\Xampp\php\wp-cli.phar plugin install simple-share-buttons-adder --activate 
+
+    #Instalar un plugin  posicionamiento SEO
+    php.exe C:\xampp\php\wp-cli.phar plugin install WP Smush --activate 
+    
+  #Genera un Post con la información de la diferencia%
+
+    $contadorlinea = 2
+    $datos = Get-Content C:\xampp\htdocs\wp\datos.txt| Select -Index ($contadorlinea - 1)
+    $contadorlinea++
+    php.exe C:\xampp\php\wp-cli.phar post create --post_title="$contenido" --post_content="<div style="background-color:aqua"><li><strong>$datos</strong></li></div>" --post_type="post" --menu_order=7
+    
+    #Automatización de Host Virtuales en Apache
+
+    $vhost1= Get-Content C:\xampp\htdocs\wp\web.txt
+    $contenido4=$vhost1.replace(".","")
+    $contenido4=$vhost1.ToLower()
+    $virtualhost1= foreach ($contenido4 in $contenido4){ 
+     "<VirtualHost *:80>
+        ##ServerAdmin webmaster@www.$contenido4.gon
+        DocumentRoot C:\Programas\Xampp\htdocs\wp\$contenido4
+        ServerName $contenido4.gon
+        ServerAlias www.$contenido4.gon
+        ErrorLog logs/wwww.$contenido4.gon.log
+     </VirtualHost>"   } 
+    add-Content C:\Users\meanagon\Desktop\httpd-vhosts.conf -Value $virtualhost1
+    add-Content C:\xampp\apache\conf\extra\httpd-vhosts.conf -Value $virtualhost1
+
+
+    $vhost2 = Get-Content C:\xampp\htdocs\wp\web.txt
+    $contenido5=$vhost2.replace(".","")
+    $contenido5=$vhost2.ToLower()
+    $virtualhost2 =foreach ($contenido5 in $contenido5){  
+    " 127.0.0.1       www.$contenido5.gon"  } 
+    add-Content C:\Users\meanagon\Desktop\hosts.File -Value $contenido5
+    add-Content C:\Windows\System32\drivers\etc\hosts.File -Value $contenido5
+    
+    cd..
+
+}
