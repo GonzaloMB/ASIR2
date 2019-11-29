@@ -1,0 +1,60 @@
+#Instalar modulo y conectarse por ssh 
+#Find-Module posh-ssh | Install-Module
+#get-module posh-ssh
+#get-command -Module posh-ssh
+
+#Generar una sesion SSH en nuestro servidor
+New-SSHSession -ComputerName "X.X.X.X" -Credential X
+
+#Copiar el contenido del fichero linux en una variable para instalar los usuarios
+$usuarios = (Invoke-SSHCommand -Index 0 "cat cd /home/gonzalomb/Escritorio/ejem.txt").output
+
+#Guardamos el contenido extraido de ubuntu
+$usuarios | Out-File C:\Users\Administrador\usuario.txt -Force
+
+#Comprobar la integridad del fichero
+(Get-FileHash  C:\Users\Administrador\usuario.txt).hash
+(Get-FileHash  C:\Users\Administrador\usuario.txt).hash > fichero1integridad.txt
+if((gc .\fichero1integridad.txt) -eq (Get-FileHash  C:\Users\Administrador\usuario.txt).hash)
+{
+     #Si el fichero es integro se instala el usuario  
+       $balloon.BalloonTipIcon  = [string]$Icon = 'Info'
+        $balloon.BalloonTipText  = "Mensaje"
+        $balloon.BalloonTipTitle  = "Hash coincide, instalando AD"
+        $balloon.Visible  = $true
+        $balloon.ShowBalloonTip(5000) 
+    
+    #Instalar usuario y Unidades Organizativas
+    foreach($ele in Get-Content  C:\Users\Administrador\usuario.txt) {
+
+    if($ele.split(",")[0] -EQ 1) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andel,DC=local"
+    }
+    
+    if($ele.split(",")[0] -EQ 2)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=EU,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+}
+
+}
+else
+{
+        #Si el fichero no es integro nos avisa 
+        $balloon.BalloonTipIcon  = [string]$Icon = 'Info'
+        $balloon.BalloonTipText  = "Mensaje"
+        $balloon.BalloonTipTitle  = "Hash no coincide"
+        $balloon.Visible  = $true
+        $balloon.ShowBalloonTip(50000000)
+}
+
+
+#Último inicio de sesión 
+ foreach($ele in Get-Content  C:\Users\Administrador\usuario.txt){
+ if($ele.split(",")[0] -EQ 2){
+    $name=  $ele.split(",")[1]
+    Get-ADUser -Filter 'Name -like $name' | %{
+    ($_ | Get-ADObject -Properties lastLogon).lastlogon
+    $dt = [DateTime]::FromFileTime(($_ | Get-ADObject -Properties lastLogon).lastlogon)
+    Write-Host $_ "last logged on at:" $dt }
+}
+}
