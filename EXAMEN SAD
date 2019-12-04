@@ -1,0 +1,183 @@
+function mostrarMenu { 
+     param ( 
+           [string]$Titulo = 'SAD' 
+     ) 
+     cls 
+     Write-Host "================ $Titulo ================" 
+      
+     Write-Host "1.Información de mi hardware y sofware"
+     Write-Host "2.Asegurar confidencialidad de un fichero"
+     Write-Host "3.Asegurar integridad de un fichero"
+     Write-Host "4.Crear contraseña segura manualmente"
+     Write-Host "5.Crear contraseña segura automaticamente"
+     Write-Host "6.Cifrar contraseña"
+     Write-Host "7.Descifrar contraseña"
+     Write-Host "8.Enviar información a otro equipo"
+     Write-Host "9.Comprabar si una IP tiene conexión"
+     Write-Host "X. Salir" 
+} do { 
+     
+     mostrarMenu
+     $input = Read-Host "¿Qué desea hacer?"
+     switch ($input)
+{ '1'{
+
+
+
+#Información de los programas instalados 
+   
+    $Programs= Get-Package
+    $Programs > Z:\Users\Administrador\info.txt
+#Llamadas WMI
+    $ComputerSystem= Get-WmiObject Win32_ComputerSystem
+    $BaseBoard=Get-WmiObject Win32_BaseBoard
+    $BIOS=Get-WmiObject Win32_BIOS
+    $Processor=Get-WmiObject Win32_Processor
+
+#Crear un objeto con todos los datos sobre el hardware
+    $equipo=[PSCustomObject]@{
+    Model = $ComputerSystem.Model
+    ManufacturerBoard = $BaseBoard.Manufacturer
+    BIOSVersion = $BIOS.SMbiosbiosversion
+    BIOSSerialNumber = $BIOS.serialnumber
+    ManufacturerProcessor=$Processor.Manufacturer
+    MaxClockSpeed=$Processor.MaxClockSpeed
+    Cargadelprcesador=$Processor.LoadPercentage
+    programas=$programas.name
+    conontroladores=$controladores
+}
+
+    $equipo.programas >> Z:\Users\Administrador\info.txt
+    $equipo.conontroladores >> Z:\Users\Administrador\info.txt
+    $info= gc Z:\Users\Administrador\info.txt
+    $info
+    Start-Sleep -s 2
+
+} '2'{
+
+#Asegurar la confidencialidad de un fichero
+#Habilitar BitLocker
+
+    Enable-BitLocker -MountPoint "Z:" -RecoveryPasswordProtector -UsedSpaceOnly -Verbose
+ 
+#Deshabilitar BitLocker
+#Disable-BitLocker -MountPoint "Z:"
+
+} '3'{
+
+(Get-FileHash  Z:\Users\Administrador\info.txt).hash > Z:\Users\Administrador\fichero1integridad.txt
+if((gc Z:\Users\Administrador\fichero1integridad.txt) -eq (Get-FileHash  Z:\Users\Administrador\info.txt).hash){
+
+        [System.Windows.MessageBox]::Show('Fichero integro','Warning')
+        $balloon = New-Object System.Windows.Forms.NotifyIcon 
+
+        #Configurar notificación
+        #Icono
+        $balloon.BalloonTipIcon  = [string]$Icon = 'Info'
+        #Mensaje
+        $balloon.BalloonTipText  = "Mensaje"
+        #Título
+        $balloon.BalloonTipTitle  = "El fichero es integro"
+ 
+        $balloon.Visible  = $true
+        $balloon.ShowBalloonTip(5000)
+    
+
+}else{
+
+        [System.Windows.MessageBox]::Show('Fichero comprometidoo','Warning')
+        $balloon = New-Object System.Windows.Forms.NotifyIcon 
+
+        #Configurar notificación
+        #Icono
+        $balloon.BalloonTipIcon  = [string]$Icon = 'Info'
+        #Mensaje
+        $balloon.BalloonTipText  = "Mensaje"
+        #Título
+        $balloon.BalloonTipTitle  = "Hash no coincide fichero comprometido"
+ 
+        $balloon.Visible  = $true
+        $balloon.ShowBalloonTip(5000)
+   
+
+}
+
+} '4'{
+
+    $pass= Read-Host 'Introducir contraseña'
+    
+    if($pass.Length -lt 4){'La contraseña es corta'}
+    else{'La contraseña es correcta según la longitud'}
+    $pass | Out-File Z:\Users\Administrador\pass.txt -Force
+    Start-Sleep -s 2
+
+
+
+} '5' {
+
+    $Assembly = Add-Type -AssemblyName System.Web
+    $pass=[System.Web.Security.Membership]::GeneratePassword(10,3) 
+    $pass | Out-File Z:\Users\Administrador\pass.txt -Force 
+    cls
+    $pass 
+    Start-Sleep -s 2
+
+} '6' {
+
+    $cadena= gc Z:\Users\Administrador\pass.txt
+    $contra1= gc Z:\Users\Administrador\pass.txt
+    $contra2 = Read-Host "Introduzca contraseña anteriormente creada"
+    if($contra1 -eq $contra2){
+    $cadena= gc Z:\Users\Administrador\pass.txt
+    $clave='clavesecreta123'
+    $clavebyte=[Byte[]]($contra1.PadRight(24).Substring(0,24).ToCharArray())
+    $cadenacifrada=$cadena | Convertto-SecureString -AsPlainText -Force | ConvertFrom-SecureString -Key $clavebyte
+    $cadenacifrada > Z:\Users\Administrador\passcifrada.txt
+    $cadenacifrada
+    cls
+     Write-Host 'Contraseña cifrada'
+     }else{"contraseña incorrecta"}
+
+} '7' {
+
+    $contra1= gc Z:\Users\Administrador\pass.txt
+    $contra2 = Read-Host "Introduzca contraseña anteriormente creada"
+    if($contra1 -eq $contra2){
+    $clavebyte=[Byte[]]($contra1.PadRight(24).Substring(0,24).ToCharArray())
+    $cadenadescifrando = $cadenacifrada | ConvertTo-SecureString -Key $clavebyte
+    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($cadenadescifrando)
+    $PlainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+    $PlainPassword
+    cls
+    Write-Host 'Contraseña descifrada'
+    }else{"Contraseña incorrecta"}
+
+} '8' {
+
+    $enviar= gc Z:\Users\Administrador\info.txt
+    $contra1= gc Z:\Users\Administrador\pass.txt
+    $contra2 = Read-Host "Introduzca contraseña anteriormente creada"
+    if($contra1 -eq $contra2){
+    $port=2020
+    $endpoint = new-object System.Net.IPEndPoint ([IPAddress]"X.X.X.X",$port)
+    $udpclient=new-Object System.Net.Sockets.UdpClient
+    $b=[Text.Encoding]::ASCII.GetBytes("$enviar| Out-File C:\info.txt -Force")
+    $bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+    $udpclient.Close()
+    cls
+    Write-Host "Información enviada"
+    }else{ Write-Host "Contraseña incorrecta"}
+} '9' {
+
+    $ip = Read-Host "Introduzca una dirección IP"
+    $resultadoping = ping $ip
+    $resultadoping
+    Start-Sleep -s 3
+
+} 'X' { 
+       cls 
+       return
+      }
+     }
+     pause 
+} until ($input -eq 'X')
