@@ -1,0 +1,107 @@
+#Servidor Escuchando
+
+While(1){
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]::any,$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient $port
+$content=$udpclient.Receive([ref]$endpoint)
+[Text.Encoding]::ASCII.GetString($content)| iex
+$udpclient.Dispose()      
+}
+
+
+#Ordenador del Administrador
+
+function mostrarMenu { 
+     param ( 
+           [string]$Titulo = 'Administrador' 
+     ) 
+     cls 
+     Write-Host "================ $Titulo ================" 
+      
+     Write-Host "1.Crear UO"
+     Write-Host "2.Crear usuario"
+     Write-Host "3.Obtener información ampliada sobre procesos"
+     Write-Host "4.Obtener información sobre las propiedades de los procesos"
+     Write-Host "5.Listar los procesos que tengan consumo alto de tiempo de CPU"
+     Write-Host "X. Salir" 
+} do { 
+     
+     mostrarMenu
+     $input = Read-Host "¿Qué desea hacer?"
+     switch ($input)
+{ '1'{
+
+$UO= Read-Host 'Introducir nombre de la unidad organizativa'
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"10.202.0.109",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+ New-ADOrganizationalUnit -Name $UO 
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+    Start-Sleep -s 2
+
+} '2'{
+$user= Read-Host 'Introducir nombre de la unidad organizativa'
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"10.202.0.109",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+ New-ADUSer -Name $User
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+Start-Sleep -s 2
+
+} '3'{
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"10.202.0.109",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+ Get-Process | Select-Object *
+gps | Select-Object *
+ps | Select-Object *
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+    Start-Sleep -s 2
+
+} '4'{
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"10.202.0.109",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+Get-Process | Select-Object Name, Id, Company
+gps | Select-Object Name, Id, Company
+ps | Select-Object Name, Id, Company
+
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+    Start-Sleep -s 2
+ 
+
+
+} '5' {
+
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"10.202.0.109",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+Get-Process | select cpu,id,name | sort cpu -Descending
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
+    Start-Sleep -s 2
+
+} 'X' { 
+       cls 
+       return
+      }
+     }
+     pause 
+} until ($input -eq 'X')
