@@ -1,0 +1,202 @@
+function mostrarMenu { 
+     param ( 
+           [string]$Titulo = 'Examen ASO' 
+     ) 
+     cls 
+     Write-Host "================ $Titulo ================" 
+      
+     Write-Host "1.Crear UO"
+     Write-Host "2.Crear Usuarios e introducir en su UO correspondiente"
+     Write-Host "3.Crear Grupos de usuarios e introducir usuarios correspondientes"
+     Write-Host "4.Listar usuarios de los grupos locales"
+     Write-Host "5.Listar grupos locales"
+     Write-Host "6.Deshabilitar los usuarios del grupo SMIR"
+     Write-Host "7.Crear UO Deshabilitados y mover usuarios grupo SMIR dentro"
+     Write-Host "8.Eliminar usuarios deshabilitados"
+     Write-Host "9.Crear carpetas conpartidas para cada usuario"
+     write-host "10.Ultimo inicio de sesión de los usuarios locales"
+     Write-host "11.Control sobre software"
+     Write-host "12.Borrar copia de impresión"
+     Write-Host "X. Salir" 
+} do { 
+     
+     mostrarMenu
+     $input = Read-Host "¿Qué desea hacer?"
+     switch ($input)
+{ '1'{
+
+  foreach($ele in Get-Content  C:\Users\Administrador\usuarios.txt) {
+
+  if($ele.split(",")[0] -EQ 1) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "DC=andel,DC=local"
+    }
+  if($ele.split(",")[0] -EQ 2) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "OU=Andel,DC=andel,DC=local"
+    }
+  if($ele.split(",")[0] -EQ 3) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "OU=Andel,DC=andel,DC=local"
+    }
+      if($ele.split(",")[0] -EQ 4) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "OU=Andel,DC=andel,DC=local"
+    }
+  if($ele.split(",")[0] -EQ 5) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "OU=Andel,DC=andel,DC=local"
+    }
+  if($ele.split(",")[0] -EQ 6) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "OU=Andel,DC=andel,DC=local"
+    }
+   if($ele.split(",")[0] -EQ 7) {
+        New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $true -Path "OU=Andel,DC=andel,DC=local"
+    }
+
+}
+
+
+} '2'{
+    foreach($ele in Get-Content  C:\Users\Administrador\usuarios.txt) {
+
+  if($ele.split(",")[0] -EQ 8)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=SMIR,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 9)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=SMIR,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 10)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ITEL,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 11)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ITEL,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+      if($ele.split(",")[0] -EQ 12)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=EMD,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 13)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=EMD,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 14)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ASIR,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 15)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ASIR,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+      if($ele.split(",")[0] -EQ 16)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ESO,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 17)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ESO,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 18)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=BATCH,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+  if($ele.split(",")[0] -EQ 19)  {
+        New-ADUSer -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=BATCH,OU=Andel,DC=andel,DC=local"  -AccountPassword (ConvertTo-SecureString "Contrasena_1928" -AsPlainText -force) -Enable $true
+    }
+}
+
+
+} '3'{
+
+foreach($ele in Get-Content  C:\Users\Administrador\usuarios.txt) {
+
+    if($ele.split(",")[0] -EQ 1)  {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=Andel,DC=andel,DC=local" -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos Andel" 
+        Add-ADGroupMember -Identity Andel -Members Aron,Kike,Christian,David,Pedro,Miguel,Carlos,Antonio,Alvaro,Manu,Jesus,Victor
+              }
+    if($ele.split(",")[0] -EQ 2)   {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=SMIR,OU=Andel,DC=andel,DC=local"  -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos SMIR" 
+        Add-ADGroupMember -Identity SMIR -Members Aron,Kike
+    }
+    if($ele.split(",")[0] -EQ 3)  {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ITEL,OU=Andel,DC=andel,DC=local"  -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos ITEL" 
+        Add-ADGroupMember -Identity ITEL -Members Christian,David
+    }
+        if($ele.split(",")[0] -EQ 4)   {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=EMD,OU=Andel,DC=andel,DC=local"  -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos EMD" 
+        Add-ADGroupMember -Identity EMD -Members Pedro,Miguel
+            }
+    if($ele.split(",")[0] -EQ 5)  {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ASIR,OU=Andel,DC=andel,DC=local"  -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos ASIR" 
+        Add-ADGroupMember -Identity ASIR -Members Carlos,Antonio
+    }
+        if($ele.split(",")[0] -EQ 6)   {
+        New-ADGroup -Name $ele.split(",")[1] -Sam $ele.split(",")[1] -Path "OU=ESO,OU=Andel,DC=andel,DC=local"  -GroupCategory Security -GroupScope Universal -Description "Grupo Alumnos ESO" 
+        Add-ADGroupMember -Identity ESO -Members Alvaro,Manu
+    }
+
+}
+
+} '4'{
+
+  $users1= (Get-ADUser -Filte * -SearchBase "OU=Andel,DC=andel,DC=local").Name
+  $users1
+
+
+} '5' {
+
+  $grupo1= (Get-ADGroup -Filte * -SearchBase "OU=Andel,DC=andel,DC=local").Name
+  $grupo1
+
+} '6' {
+
+ $users2= (Get-ADUser -Filte * -SearchBase "OU=SMIR,OU=Andel,DC=andel,DC=local").Name
+ foreach($us2 in $users2){
+ Set-ADUser -Identity $us2 -Enable $false
+ }
+
+} '7' {
+
+    foreach($ele in Get-Content  C:\Users\Administrador\usuarios.txt) {
+    if($ele.split(",")[0] -EQ 20) {
+      New-ADOrganizationalUnit -Name $ele.split(",")[1] -ProtectedFromAccidentalDeletion $false -Path "DC=andel,DC=local"
+      Move-ADObject "CN=Kike,OU=SMIR,OU=Andel,DC=andel,DC=local" -TargetPath "OU=Deshabilitados,DC=andel,DC=local"
+      Move-ADObject "CN=Aron,OU=SMIR,OU=Andel,DC=andel,DC=local" -TargetPath "OU=Deshabilitados,DC=andel,DC=local"
+    }
+  }
+
+} '8' {
+
+ Remove-ADUser -Identity Aron
+ Remove-ADUser -Identity Kike
+ Remove-ADGroup -Identity SMIR
+ Remove-ADOrganizationalUnit -Identity "OU=SMIR,OU=Andel,DC=andel,DC=local"
+
+} '9' {
+
+ 
+     $var1= (Get-ADUser -Filte * -SearchBase "OU=Andel,DC=andel,DC=local").Name
+     $var1| out-file C:\Users\Service_Users\usuarios.txt 
+     foreach( $users in $var1){
+     New-Item C:\Users\Service_Users\$users -ItemType Directory -Force
+     New-SMBShare –Name $users –Path C:\Users\Service_Users\$users 
+    } 
+    net share
+
+
+}'10' {
+
+   $var2= (Get-ADUser -Filte * -SearchBase "OU=Andel,DC=andel,DC=local").Name
+   $var2| out-file C:\Users\Service_Users\inicio_sesion.txt 
+   foreach($name in $var2){
+    Get-ADUser -Filter 'Name -like $name' | %{
+    ($_ | Get-ADObject -Properties lastLogon).lastlogon
+    $dt = [DateTime]::FromFileTime(($_ | Get-ADObject -Properties lastLogon).lastlogon)
+    Write-Host $_ "last logged on at:" $dt }
+}
+
+}'11'{
+ 
+ 
+Get-ChildItem hklm:\software\microsoft\windows\currentversion\uninstall | ForEach-Object {(Get-ItemProperty $_.pspath).DisplayName}
+
+}'12'{
+
+  Get-PrintJob -ComputerName GONMB -PrinterName "IMPRESORA"
+
+  
+} 'X' { 
+       cls 
+       return
+      }
+     }
+     pause 
+} until ($input -eq 'X')
