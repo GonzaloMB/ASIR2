@@ -38,6 +38,13 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 	    $sesion = htmlspecialchars($_GET['sesion']);
 		$nombre = htmlspecialchars($_GET['nombre']);
 		$coded = base64_encode($nombre);
+
+		// Comienzo de la sesión
+        session_start();
+        // Guardar datos de sesión
+        $_SESSION["usuario"] = "$sesion";
+
+echo "Sesión iniciada y establecido nombre de usuario!" . "<br>";
 		
 		$command1 = "[System.Convert]::ToBase64String((Get-Content ";
 		$command2 = " -Encoding Byte)) > codedimg.txt";
@@ -88,7 +95,11 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 	<h4><?php 
 	echo $sesion ;
 	?></h4>
-  
+
+	<?php
+	session_unset();
+	?>
+
   ##pickimg.html
   
   <form action="pick.php" method="get">
