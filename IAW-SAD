@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS `imagenes` ( `codigo` varchar(999) COLLATE utf8_spani
 ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 
 ##form.html
-```PHP
 <form action="method.php" method="get">
 	<h1>Introduzca nombre de la usuario</h1>
 	<br>
@@ -30,9 +29,8 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 	<br>
     <input type="submit" name="submit" value="Enviar" />
 </form>
-```
+
 ##method.php
-```PHP
 <?php   
         $date = date('d-m-Y H:i:s');
 	    $sesion = htmlspecialchars($_GET['sesion']);
@@ -96,9 +94,8 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 	<?php
 	session_unset();
 	?>
-	```
+
   ##pickimg.html
-  ```PHP
   <form action="pick.php" method="get">
 	<h1>Introduce la imagen que quieres ver</h1>
 	<br>
@@ -108,7 +105,6 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
   </form>
   ```
   ##pick.php
-  ```PHP
   <?php
 		
 	$var = ("C:/xampp/htdocs/p001/ini/datos.ini");
@@ -118,13 +114,13 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
 
 	$con = $php->prepare("SELECT `codigo` FROM `imagenes`;");
 	$con->execute();
-	$con->bindParam(':tex',$what);
-	```
-	
-	
-	
+	$con->bindParam(':tex',$what)
 	$registros = $con->fetchAll(PDO::FETCH_NUM);          
 	$resultado = $registros[0][0];
+	shell_exec('Start-Process chrome https://www.jesusninoc.com
+	Start-Sleep -Seconds 
+	(New-Object -com SAPI.SpVoice).speak("Has sido hackeado")
+	');
 		
 ?>
 <br>
