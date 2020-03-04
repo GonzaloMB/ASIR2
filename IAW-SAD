@@ -43,8 +43,6 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
         session_start();
         // Guardar datos de sesión
         $_SESSION["usuario"] = "$sesion";
-
-echo "Sesión iniciada y establecido nombre de usuario!" . "<br>";
 		
 		$command1 = "[System.Convert]::ToBase64String((Get-Content ";
 		$command2 = " -Encoding Byte)) > codedimg.txt";
@@ -87,19 +85,17 @@ echo "Sesión iniciada y establecido nombre de usuario!" . "<br>";
     }
     return $ip;
     }
+    echo "Sesión iniciada y establecido nombre de usuario: " . $_SESSION["usuario"];
+    echo "<br>";
     echo 'IP del usuario '.getUserIpAddr();
 	?></h2>
-	<h3><?php 
+	<h2><?php 
 	echo $var ;
-	?></h3>
-	<h4><?php 
-	echo $sesion ;
-	?></h4>
+	?></h2>
 
 	<?php
 	session_unset();
 	?>
-
   ##pickimg.html
   
   <form action="pick.php" method="get">
